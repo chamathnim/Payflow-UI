@@ -1,16 +1,77 @@
-# React + Vite
+# PayFlow UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A minimal React frontend for the [PayFlow](https://github.com/chamathnim/payflow) digital payment processing platform.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| | |
+|---|---|
+| Framework | React 18 |
+| Build Tool | Vite |
+| Routing | React Router v6 |
+| Auth | JWT via Context API |
+| Styling | Plain CSS |
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Login** — authenticates against PayFlow API Gateway, stores JWT in localStorage
+- **Wallet Dashboard** — displays balance and allows top-up
+- **Transactions** — send money to other users, view transaction history
+- **Protected Routes** — unauthenticated users are redirected to login
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js 18+
+- PayFlow backend running locally via Docker Compose
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+```
+
+Open `http://localhost:5173`
+
+> Make sure the PayFlow API Gateway is running on `http://localhost:8080` before starting the frontend.
+
+## Project Structure
+
+```
+src/
+├── context/
+│   └── AuthContext.jsx       # JWT token stored globally via Context API
+├── pages/
+│   ├── LoginPage.jsx         # Login form → POST /api/v1/auth/login
+│   ├── DashboardPage.jsx     # Wallet balance + top-up
+│   └── TransactionsPage.jsx  # Send money + transaction history
+├── components/
+│   ├── Navbar.jsx            # Navigation + logout
+│   └── ProtectedRoute.jsx    # Redirects unauthenticated users to login
+├── App.jsx                   # Route definitions
+└── main.jsx                  # App entry point
+```
+
+## API Endpoints Used
+
+| Action | Method | Endpoint |
+|---|---|---|
+| Login | POST | `/api/v1/auth/login` |
+| Get Wallet | GET | `/api/v1/wallets/{userId}` |
+| Top Up | POST | `/api/v1/wallets/topup` |
+| Get Transactions | GET | `/api/v1/transactions/user/{userId}` |
+| Send Money | POST | `/api/v1/transactions` |
+
+## Backend
+
+The backend is a Spring Boot microservices platform with an API Gateway, User Service, Wallet Service, Transaction Service, Notification Service, and Audit Service.
+
+→ [PayFlow Backend Repository](https://github.com/chamathnim/payflow)
+
+## Author
+
+**Chamath** — Java & Spring Boot Developer  
+[GitHub](https://github.com/chamathnim)
